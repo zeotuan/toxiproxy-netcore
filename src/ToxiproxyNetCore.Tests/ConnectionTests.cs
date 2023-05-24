@@ -12,16 +12,8 @@ namespace ToxiproxyNetCore.Tests
         [Fact]
         public void ErrorThrownIfHostIsNullOrEmpty()
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var connection = new Connection("");
-
-            });
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var connection = new Connection(null);
-            });
+            Assert.Throws<ArgumentNullException>(() => new Connection(""));
+            Assert.Throws<ArgumentNullException>(() => new Connection(null));
         }
 
         [Fact]
@@ -31,6 +23,7 @@ namespace ToxiproxyNetCore.Tests
 
             var client = connection.Client();
             await client.AddAsync(TestProxy.One);
+
 
             var proxy = await client.FindProxyAsync(TestProxy.One.Name);
             proxy.Enabled = false;

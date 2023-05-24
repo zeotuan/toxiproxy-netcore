@@ -28,7 +28,6 @@ namespace ToxiproxyNetCore.Tests
 
             // Retrieve the proxy
             var proxy = await client.FindProxyAsync("one");
-
             // Check if it the correct one
             Assert.NotNull(proxy);
             Assert.Equal(proxy.Name, TestProxy.One.Name);
@@ -44,7 +43,7 @@ namespace ToxiproxyNetCore.Tests
             await client.AddAsync(TestProxy.Two);
 
             // Retrieve all the proxies
-            var all = client.AllAsync().Result;
+            var all = await client.AllAsync();
 
             // Check if there are two proxies
             Assert.Equal(2, all.Keys.Count);
@@ -67,7 +66,7 @@ namespace ToxiproxyNetCore.Tests
             await client.DeleteAsync(TestProxy.Two.Name);
 
             // The client should contain only a proxy
-            var all = client.AllAsync().Result;
+            var all = await client.AllAsync();
             Assert.Equal(1, all.Keys.Count);
 
             // The single proxy in the collection should be the 3th proxy
@@ -90,7 +89,7 @@ namespace ToxiproxyNetCore.Tests
             await client.UpdateAsync(proxyToUpdate);
 
             // Retrieve the proxy and check if the parameters are correctly updated
-            var proxyUpdated = client.FindProxyAsync(proxyToUpdate.Name).Result;
+            var proxyUpdated = await client.FindProxyAsync(proxyToUpdate.Name);
 
             Assert.Equal(proxyToUpdate.Enabled, proxyUpdated.Enabled);
             Assert.Equal(proxyToUpdate.Listen, proxyUpdated.Listen);
@@ -109,7 +108,7 @@ namespace ToxiproxyNetCore.Tests
 
             // Retrieve the proxy
             var proxyCopy = await client.FindProxyAsync(TestProxy.One.Name);
-
+            
             // The proxy should be enabled
             Assert.True(proxyCopy.Enabled);
         }
@@ -144,7 +143,7 @@ namespace ToxiproxyNetCore.Tests
 
             // deleting is not idemnepotent and should throw exception
             await proxy.DeleteAsync();
-            var exception = Assert.ThrowsAsync<ToxiProxiException>(() => proxy.DeleteAsync()).Result;
+            var exception = await Assert.ThrowsAsync<ToxiProxiException>(async () => await proxy.DeleteAsync());
             Assert.Equal("Not found", exception.Message);
         }
 

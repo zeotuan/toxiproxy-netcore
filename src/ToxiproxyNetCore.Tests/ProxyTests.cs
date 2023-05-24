@@ -30,7 +30,7 @@ namespace ToxiproxyNetCore.Tests
             var slicerToxic = new SlicerToxic
             {
                 Name = "SlicerToxicTest",
-                Stream = ToxicDirection.UpStream
+                Stream = ToxicDirection.UpStream,
             };
             slicerToxic.Attributes.AverageSize = 10;
             slicerToxic.Attributes.Delay = 5;
